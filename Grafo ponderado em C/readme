@@ -1,0 +1,11 @@
+O arquivo teste que é composto pelos passos de entrada que são organizados da seguinte forma :
+Um inteiro que representa o número de passos máximo de passos distintos usados na otimização ( tamanho n )
+Um inteiro que mostra quantos passos vem a seguir
+passo1  passo2 ...
+Separados por espaços
+
+O arquivo nomes contém o nome de cada passo na ordem 
+
+O resultado é composto pelo nome do vértice
+Logo em seguida os vizinhos todas as tinhas tem tamanho N
+E em seguida o total de vizinhos que ele tem.
