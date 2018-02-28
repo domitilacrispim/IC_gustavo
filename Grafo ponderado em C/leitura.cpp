@@ -7,11 +7,27 @@ typedef struct no{
 	double total=0;
 }no;
 
+typedef struct Grafo{
+	int qtd_ver;
+	no *vertices;
+}Grafo;
+
+
+Grafo cria_grafo( Grafo G, int qd_v){
+	G.qtd_ver=qd_v;
+	G.vertices=(no*)malloc(sizeof(no)*(qd_v));
+	for(int i=0; i<qd_v; i++){
+		G.vertices[i].vizinho = (double*)malloc(sizeof(double)*(qd_v));
+		memset(	G.vertices[i].vizinho, 0, sizeof(G.vertices[i].vizinho));
+	}
+	return G;
+}
 
 int main (){
 	int  contnum=0, result, cont=0, vert1=0, i, vert2=0, conta=1;
 	char nom[50];
 	int tam;	
+	puts("POPOPO");
 	//lendo do arquivo e colocando no grafo *****************************************************************************
 	FILE *arq;
 	arq = fopen("teste", "rt");
@@ -20,7 +36,9 @@ int main (){
 	}	
 		
 	result = fscanf(arq, "%d", &tam); // o arq se inicia com o numero maximo de passos distindos q podem ser usados		
-	no grafo[tam+3];	//''cria'' o grafo 
+	//no grafo[tam+3];	//''cria'' o grafo 
+	Grafo grafo=cria_grafo(grafo, tam+1);
+	//	printf("%lf\n", grafo.vertices[1].total);	
 	
 	while(1){
 		result = fscanf(arq, "%d", &cont); 
@@ -35,12 +53,8 @@ int main (){
 				conta=1;
 			}
 			else if(conta==1){
-				if(grafo[vert1].total==0){
-					grafo[vert1].vizinho=(double*)malloc(sizeof(double)*(tam+1)); 		
-					memset(	grafo[vert1].vizinho, 0, sizeof(grafo[vert1].vizinho));
-				}
-				grafo[vert1].total++; //printf("%lf!! %d\n", grafo[vert1].total, vert1);
-				grafo[vert1].vizinho[vert2]++;
+				grafo.vertices[vert1].total++; 
+				grafo.vertices[vert1].vizinho[vert2]++;
 				vert1=vert2;
 			}
 		}
@@ -57,17 +71,19 @@ int main (){
 	while(1){
 		result = fscanf(arq1, "%s", nom); 
 		if(result==EOF) break;
-		strcpy(grafo[aux].nome,nom);
+		strcpy(grafo.vertices[aux].nome,nom);
 		aux++;	
 	}
 	fclose(arq1);
+		
+	 
 	// nomeiou os vertices !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	FILE *arq2 = fopen("resultado", "wt");
 	if(arq2==NULL) {
 		printf("Nao eh possivel abrir o arquivo!\nMissao abortada.\n"); return 0;
 	}	
 	// gravando no arquivo &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&	
-	fprintf(arq2,"%d\n",tam);  
+	fprintf(arq2,"%d\n",tam);  /*
 	for(int y=1; y<=tam; y++){
 		fprintf(arq2,"%s\n",grafo[y].nome);  
 		// apenas 0 os vertices q nao foram usados pra q nao de problrma ao ler ############################################
@@ -81,5 +97,5 @@ int main (){
 		}
 		fprintf(arq2,"\n%lf\n",grafo[y].total );  
 	}
-	// gravado com sucesso &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+	// gravado com sucesso &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 }
