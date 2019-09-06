@@ -48,21 +48,15 @@ individuo gera_ind( individuo id, int num_inic, Grafo g, int max){
 	//printf ("%d\n",max);
 	while(max>0){	
 		//printf("%d", g.vertices[num_inic].total);
-		if( (int)g.vertices[num_inic].total<1) { num_inic=rand()%161;
-				continue;
-		 }
-		if((int)g.vertices[num_inic].total>0){
-			aux=rand()%(int)g.vertices[num_inic].total;
-			//aux++;
-			//puts("MIMIM");
-		}	
+		 num_inic=rand()%161;
+			
 		
 		strcpy(id.passos[tam],g.vertices[(int)g.vertices[num_inic].vizinho[aux]].nome);
 		max--;
 		tam++;
 		//printf("%s",g.vertices[(int)g.vertices[num_inic].vizinho[aux]].nome);
 				
-		num_inic=g.vertices[num_inic].vizinho[aux];
+		//num_inic=g.vertices[num_inic].vizinho[aux];
 	}
 	return id;
 }
@@ -72,12 +66,8 @@ populacao gera_pop(populacao p, Grafo g, int maxi){
 	
    	
 	for(int ind=0; ind<tampop; ind++){
-		//printf("%d %d\n", random, g.vertices[random].total);	
-		if(g.vertices[random].total==0){
+		
 			random=rand()%161; 
-			ind--; 
-		}		
-		else {
 			max=tami;
 			max++;
 			p.pop[ind].n_passos=max;
@@ -87,11 +77,11 @@ populacao gera_pop(populacao p, Grafo g, int maxi){
 			//printf("%d\n", random);	
 			p.pop[ind]=gera_ind(p.pop[ind], random, g, max); 
 			random=rand()%161;
-		}
 	}
 	p.ger=0;
 	return p;
 }
+
 
 
 int main (int argc,  char *argv[ ] ){
@@ -120,56 +110,8 @@ int main (int argc,  char *argv[ ] ){
 		i++;
 	}
 	srand(time(0));  
-	while ( ( lsdir = readdir(dir) ) != NULL ){
-		//return 0;
-        	if (lsdir->d_name[0]!='.' && strcmp(lsdir->d_name, nom_p)!=0 ){
-			i=-1;
-			min=0;
-			 
- 			bzero(cat, 100); // limpa a variavel cat
-			strcat(cat, "Sequencias_TI/"); // concatena valores em cat
-			strcat(cat, lsdir->d_name);
-			fclose(arq);
-			arq = fopen (cat, "rt"); 
-			while(fscanf(arq, "%s", nom)!=EOF){
-				min++; //printf("cdns");
-				nom[strlen(nom)-1]='\0';
-				for( int ji=0; ji<161; ji++){
-					//	printf("%s !!! %s\n", g.vertices[ji].nome, nom);
-										
-					if(strcmp(g.vertices[ji].nome, nom)==0){
-						//printf("%s %s\n", g.vertices[ji].nome, nom);
-						if(i==-1){
-							g.vertices[ji].inicial++;
-
-							i=ji; break;
-							}	
-						else {
-							//printf("%d\n", (int)g.vertices[i].total);
-							g.vertices[i].vizinho[(int)g.vertices[i].total]=ji;
-							g.vertices[i].total++;	
-							//printf("%d\n", i);
-							i=ji;
-							//printf("%s %s\n", nom, g.vertices[i].nome);		 break;				
-
-						}	
-						break;		
-					}
-					
-				}
-				
-			
-				
-			} 	
-			if(min>max) max=min;
-		
-		}
-		//printf("%d\n",rand()%161);
-			
-			
-    	}
-	closedir(dir); 
-	//	return 0; 	 	
+	
+	return 0; 	 	
 	fclose(arq);
 	p=gera_pop(p,g, max);
 		
