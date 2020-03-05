@@ -53,7 +53,7 @@ individuo gera_ind( individuo id, int num_inic, Grafo g, int max){
 		else {
 			num_inic=rand()%161;
 		}
-		strcpy(id.passos[tam],g.vertices[num_inic].nome); // aleatorio 	
+		strcpy(id.passos[tam],g.vertices[num_inic].nome); 
 		max--;
 		tam++;
 	}
@@ -79,12 +79,14 @@ populacao gera_pop(populacao p, Grafo g, int maxi){
 
 
 int main (int argc,  char *argv[ ] ){
-
+	
 	Grafo g;
-	int tam, i=0, max=0, min, bal=0;
-	char nom[50], cat[100], nom_p[50], car;
+	int tam, i=0, ji, max=0, min, bal=0, ju;
+	char nom[50], cat[100], nom_p[50], car, dire[100]="\0";
 	populacao p;
 	FILE *arq, *arq2;
+	
+	arq2 = fopen("/opt/lara-tools/larad/algorithms/list/dse_algo2.lara","w+");
 	DIR *dir;
     	struct dirent *lsdir;
 	strcpy(nom_p, argv[1]);
@@ -93,7 +95,7 @@ int main (int argc,  char *argv[ ] ){
 	arq = fopen ("resultado1", "rt");
 	fscanf (arq, "%d", &tam); //return 0;//printf("%d", tam);
 	g=cria_grafo(g, tam+1);
-
+	
 	while(i<tam){
 		fscanf (arq, "%s", nom);
 		if(nom==NULL) break;
@@ -102,24 +104,60 @@ int main (int argc,  char *argv[ ] ){
 		g.vertices[i].vizinho=(double*) malloc (45*sizeof (double));
 		i++;
 	}
-	srand(time(0));
+	fclose(arq);
+	
+	while ( ( lsdir = readdir(dir) ) != NULL )
+    	{
+			strcat(	dire,"/home/lcbio-200/Domitila/Sequencias_TI/");
+			strcat(	dire, lsdir->d_name);
+			arq = fopen ( dire,"rt");	
+			fscanf(arq, "%s", nom);
+		
+		for ( ji=0; ji<tam; ji ++){
+			if( strcmp(g.vertices[ji].nome, nom)==0){
+				break;
+			}
+		}
+		while(fscanf(arq, "%s", nom)!=EOF){
+			for(int jo=0; jo<tam; jo++){
+				if(strcmp(g.vertices[jo].nome, nom)==0){
+					for( ju=0 ; ju<g.vertices[ji].total; ju++){
+						if(g.vertices[ji].vizinho[(int)g.vertices[ji].total]=g.vertices[ji].vizinho[ju]){
+							ju=-1;
+							break;
+						}
+					} 
+					if(ju!=-1){ // verificação pra ver se já não ta adicionado
+						g.vertices[ji].vizinho[(int)g.vertices[ji].total ] = jo;				
+						g.vertices[ji].total++;
+					}
+					break;
+		
+				}
+			}
+		}
 
+		fclose(arq);
+		        bzero(dire, 100);		
+    	}
+	    closedir(dir);
+	srand(time(0));
 	fclose(arq);
 	p=gera_pop(p,g, max);
-
+	
 	bzero(cat, 100); // limpa a variavel cat
 	arq = fopen("/opt/lara-tools/larad/algorithms/list/dse_algo.lara","r+");
-	arq2 = fopen("/opt/lara-tools/larad/algorithms/list/dse_algo2.lara","w+");
 int aux_col=0;
 	while(1){
-		fscanf(arq,"%c", &car);
-		fprintf(arq2, "%c", car);
+		fscanf(arq,"%c", &car); 
+		fprintf(arq2, "%c", car); 
 		if(car=='['){
-			aux_col++;
+			aux_col++;	
 		}
 		if(aux_col==2) break;
 	}
-	printf("\n" );
+
+	printf("\n" ); 
 	for(int i=0; i<100; i++){
 		if(i!=0) fprintf( arq2,", ");
 		fprintf( arq2, "[ ");
@@ -130,6 +168,7 @@ int aux_col=0;
 
 		fprintf( arq2, "]\n");
 	}
+
 	int verdade=0;
 	while(fscanf(arq,"%c", &car )!=EOF){
 		if(car=='[') {
@@ -144,5 +183,6 @@ int aux_col=0;
 			fprintf(arq2, "%c", car );
 		}
 	}
+			
 	rename("/opt/lara-tools/larad/algorithms/list/dse_algo2.lara", "/opt/lara-tools/larad/algorithms/list/dse_algo.lara");
 }
