@@ -1,0 +1,24 @@
+OVERVIEW: larad 1.00 of 1 May 2016, by Ricardo Nobre <ricardo.nobre@fe.up.pt>.
+
+USAGE: larad [options] <file>
+
+OPTIONS:
+  -compiler			- Compiler (default: llvm371)
+    =llvm371			-   LLVM 3.7.1 (Clang frontend + LLVM optimizer + LLVM compiler)
+    =llvm330			-   LLVM 3.3.0 (Clang frontend + LLVM optimizer + LLVM compiler)
+    =reflectc			-   REFLECTC (The CoSy-based FP7 REFLECT Project compiler)
+  -target			- Target for exploration (default: host)
+    =host (L)			-   Host CPU
+    =leon3 (L)			-   LEON3 (simulated using TSIM2)
+    =microblaze (L,R)		-   MicroBlaze 5-stage (simulated using ACE MB simulator)
+    =microblaze-small (L,R)	-   MicroBlaze 3-stage (simulated using ACE MB simulator)
+  -algo				- DSE algorithm to use (default: random)
+    =random			-   Random sampling
+    =sa				-   Simulated annealing (alpha, t_min and t_max automatically tuned to source aplication)
+    =hc				-   Hill climber
+    =ins			-   Insert approach
+    =ga				-   Genetic Algorithm
+    =list			-   Test list of known good sequences
+  -nsteps			- Number of compile/test iterations (default: 1000)
+  -seqlen			- Maximum number of compiler passes per sequence (default: 32)
+  -nexec			- Number of times each compiled program is tested per iteration (default: 1)
