@@ -58,7 +58,6 @@ populacao gera_pop(populacao p, Grafo g, int maxi){
 				roleta+=(1/(double)g.vertices[(int)g.vertices[random].vizinho[it]].aparicao);
 				printf("%lf ",roleta);
 			}
-			getchar();
 			aux_s = ((double) rand() * 2) / ( double ) RAND_MAX;
 			aux_s=aux_s*roleta; 
 			printf("%lf\n", aux_s);			
@@ -88,15 +87,15 @@ int main (int argc,  char *argv[ ] ){
 	int tam, i=0, ji, max=0, min, bal=0, ju;
 	char nom[50], cat[100], nom_p[50], car, dire[100]="\0";
 	populacao p;
-	FILE *arq, *arq2;
-	
+	FILE *arq, *arq2;	
 	arq2 = fopen("/opt/lara-tools/larad/algorithms/list/dse_algo2.lara","w+");
 	DIR *dir;
     	struct dirent *lsdir;
-	strcpy(nom_p, argv[1]); 
+	strcpy(nom_p, argv[1]);
+	 
 	//printf("%s\n", nom_p); return 0;
 	dir = opendir("/home/domitila/Documentos/TCC/Sequencias_TI/");	// caminho de onde estao salvos os passos
-	arq = fopen ("resultado1", "rt");
+	arq = fopen ("/home/domitila/Documentos/TCC/Sequencias_TI/resultado1", "rt"); 
 	fscanf (arq, "%d", &tam); //return 0;//printf("%d", tam);
 	g=cria_grafo(g, tam+1);
 	
@@ -142,7 +141,7 @@ int main (int argc,  char *argv[ ] ){
 		fclose(arq);
 		 bzero(dire, 100);		
     	}
-	
+
 	    closedir(dir);
 	srand(time(0));
 	p=gera_pop(p,g, max);
